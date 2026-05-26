@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "TabCost Pro",
+  "version": "1.5.3",
+  "description": "Track the real cost of your inactive tabs. Bilingual extension (English/Spanish).",
+  "permissions": [
+    "storage",
+    "tabs",
+    "alarms",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://api.gumroad.com/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'; connect-src 'self' https://api.gumroad.com;"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}

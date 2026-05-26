@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    :root {
+      --bg-main: #f8fafc;
+      --bg-card: radial-gradient(circle at top, #e0e7ff 0%, #ffffff 100%);
+      --border: #e2e8f0;
+      --text-title: #0f172a;
+      --text-sub: #475569;
+      --badge-bg: #e2e8f0;
+      --badge-text: #475569;
+      --accent: #2563eb;
+      --danger: #f43f5e;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-main: #0b0f19;
+        --bg-card: radial-gradient(circle at top, #1e1b4b 0%, #0f172a 100%);
+        --border: #1e293b;
+        --text-title: #f1f5f9;
+        --text-sub: #94a3b8;
+        --badge-bg: #1e293b;
+        --badge-text: #94a3b8;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      width: 340px; margin: 0;
+      font-family: system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-title);
+      padding: 16px;
+    }
+
+    .header {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid var(--border); padding-bottom: 12px;
+      gap: 8px;
+    }
+    .logo { font-weight: 800; font-size: 16px; color: #38bdf8; flex-shrink: 0; }
+    .header-right { display: flex; align-items: center; gap: 8px; }
+
+    .badge {
+      font-size: 10px; padding: 2px 8px; border-radius: 99px;
+      font-weight: 700; background-color: var(--badge-bg); color: var(--badge-text);
+      white-space: nowrap;
+    }
+    .badge.pro { background-color: #f59e0b; color: #000; }
+
+    .lang-toggle {
+      display: flex; align-items: center;
+      background: var(--badge-bg); border-radius: 99px;
+      padding: 2px; gap: 2px; flex-shrink: 0;
+    }
+    .lang-btn {
+      border: none; background: transparent; cursor: pointer;
+      font-size: 10px; font-weight: 700; padding: 3px 7px; border-radius: 99px;
+      color: var(--text-sub); transition: all 0.15s ease; line-height: 1;
+    }
+    .lang-btn.active {
+      background: var(--accent); color: white;
+      box-shadow: 0 1px 3px rgba(37,99,235,0.4);
+    }
+
+    .onboarding-popup-card {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white; border-radius: 12px; padding: 16px; margin: 16px 0; text-align: left;
+    }
+    .onboarding-popup-card h3 { margin: 0 0 6px; font-size: 14px; font-weight: 800; }
+    .onboarding-popup-card p  { margin: 0 0 12px; font-size: 12px; color: #dbeafe; }
+    .onboarding-popup-card .flex-row { display: flex; gap: 8px; }
+    .onboarding-popup-card input {
+      flex: 1; padding: 8px; border-radius: 6px;
+      border: none; font-size: 13px; font-weight: bold;
+    }
+    .onboarding-popup-card button {
+      background-color: #f59e0b; color: #000; border: none;
+      padding: 8px 14px; font-weight: bold; border-radius: 6px;
+      font-size: 13px; cursor: pointer; white-space: nowrap;
+    }
+    .onboarding-popup-card button:hover { background-color: #d97706; }
+
+    .main-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 24px 16px; text-align: center; margin: 16px 0;
+      position: relative;
+    }
+    .label {
+      font-size: 11px; color: var(--text-sub);
+      text-transform: uppercase; letter-spacing: 0.07em; font-weight: 700;
+    }
+    .cost-display {
+      font-size: 42px; font-weight: 900; margin: 8px 0;
+      background: linear-gradient(to right, #f43f5e, #f97316);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .sub-label { font-size: 11px; color: var(--text-sub); }
+
+    /* [NEW] Reset button minimalista */
+    .reset-cost-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--badge-bg);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      color: var(--text-sub);
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .reset-cost-btn:hover {
+      background: var(--danger);
+      color: white;
+      border-color: var(--danger);
+      transform: scale(1.02);
+    }
+    .reset-cost-btn.pro-only {
+      display: flex;
+    }
+
+    .btn {
+      width: 100%; background-color: var(--accent); color: white;
+      border: none; padding: 12px; border-radius: 8px;
+      font-weight: 700; font-size: 14px; cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn:hover { background-color: #1d4ed8; }
+    .btn:active { transform: scale(0.98); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn.secondary {
+      background-color: transparent;
+      border: 1px solid var(--border); color: var(--text-sub);
+      margin-top: 8px; font-weight: 500;
+    }
+    .btn.secondary:hover { background-color: var(--badge-bg); color: var(--text-title); }
+
+    .footer {
+      display: flex; justify-content: space-between;
+      margin-top: 16px; font-size: 11px; color: var(--text-sub);
+    }
+    .footer a { color: #38bdf8; text-decoration: none; font-weight: 600; }
+    .footer a:hover { text-decoration: underline; }
+
+    .pro-input-area {
+      margin-top: 12px; padding: 10px;
+      background: var(--badge-bg); border-radius: 8px;
+      display: none; border: 1px solid var(--border);
+      animation: fadeIn 0.15s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+    .pro-input-area input {
+      width: 60%; padding: 6px;
+      background: var(--bg-main); border: 1px solid var(--border);
+      border-radius: 4px; font-size: 12px; color: var(--text-title);
+    }
+    .pro-input-area button {
+      width: 35%; padding: 6px;
+      background: #f59e0b; border: none; border-radius: 4px;
+      font-weight: bold; cursor: pointer; font-size: 12px; color: #000;
+    }
+    .pro-input-area button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .currency-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      gap: 12px;
+    }
+    .currency-select {
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 8px;
+      font-size: 12px;
+      color: var(--text-title);
+      cursor: pointer;
+    }
+    .buy-pro-btn {
+      background-color: #10b981;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .buy-pro-btn:hover {
+      background-color: #059669;
+    }
+
+    .toast {
+      position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
+      background: #1e293b; color: #f8fafc; padding: 8px 16px;
+      border-radius: 99px; font-size: 12px; font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3); white-space: nowrap;
+      animation: toastIn 0.2s ease, toastOut 0.3s ease 1.5s forwards;
+      z-index: 999;
+    }
+    .toast.success { border-left: 3px solid #22c55e; }
+    .toast.error   { border-left: 3px solid #f43f5e; }
+    @keyframes toastIn  { from { opacity:0; bottom:4px; } to { opacity:1; bottom:12px; } }
+    @keyframes toastOut { from { opacity:1; } to { opacity:0; } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">TabCost</div>
+    <div class="header-right">
+      <div class="lang-toggle" id="langToggle" title="Switch language / Cambiar idioma">
+        <button class="lang-btn" id="langES" data-lang="es">ES</button>
+        <button class="lang-btn" id="langEN" data-lang="en">EN</button>
+      </div>
+      <span id="planBadge" class="badge free">FREE</span>
+    </div>
+  </div>
+
+  <div class="onboarding-popup-card" id="popupOnboarding" style="display:none;">
+    <h3 id="popupOnboardingTitle">Set your rate</h3>
+    <p  id="popupOnboardingDesc">Enter your hourly rate to calibrate the distraction radar:</p>
+    <div class="flex-row">
+      <input type="number" id="fastRateInput" placeholder="$ e.g. 45" min="1">
+      <button id="saveFastRateBtn">Set rate</button>
+    </div>
+  </div>
+
+  <div class="main-card">
+    <!-- [NEW] Botón minimalista de reset (solo PRO) -->
+    <button id="resetCostBtn" class="reset-cost-btn" title="Reset today's cost to zero" style="display: none;">↺</button>
+    <div class="label" id="opportunityLabel">Opportunity Cost Today</div>
+    <div id="costValue" class="cost-display">$0.00</div>
+    <div id="rateValue" class="sub-label">Based on $0/h rate (20% impact)</div>
+
+    <div class="currency-row">
+      <select id="currencySelectPopup" class="currency-select">
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+      </select>
+      <button id="buyProPopup" class="buy-pro-btn">Buy Pro (5 USD/EUR)</button>
+    </div>
+  </div>
+
+  <button id="closeRedBtn" class="btn">Release Focus &amp; Close Inactive</button>
+  <button id="optionsBtn"  class="btn secondary">Advanced History &amp; Reports</button>
+
+  <div class="pro-input-area" id="proArea">
+    <input type="text" id="licenseKey" placeholder="License code">
+    <button id="activateBtn">Activate</button>
+  </div>
+
+  <div class="footer">
+    <span id="privateData">Private local data</span>
+    <a href="#" id="goProLink">Unlock Premium</a>
+    <a href="#" id="docsLink">📘 Guide & FAQ</a>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

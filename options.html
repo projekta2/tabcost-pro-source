@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>TabCost — Control Panel</title>
+  <style>
+    /* (el mismo CSS que antes, sin cambios) */
+    :root {
+      --bg-main: #f4f6fa;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text-title: #0f172a;
+      --text-sub: #475569;
+      --canvas-bg: #f1f5f9;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --pro: #f59e0b;
+      --pro-hover: #d97706;
+      --danger: #dc2626;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-main: #0f172a;
+        --card-bg: #1e293b;
+        --border: #334155;
+        --text-title: #f1f5f9;
+        --text-sub: #94a3b8;
+        --canvas-bg: #0f172a;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-title);
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 24px 60px;
+      line-height: 1.5;
+    }
+    .page-header {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px; margin-bottom: 28px;
+    }
+    .page-header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin: 0; }
+    .lang-toggle {
+      display: flex; align-items: center; gap: 4px;
+      background: var(--border); border-radius: 99px; padding: 3px;
+    }
+    .lang-btn {
+      border: none; background: transparent; cursor: pointer;
+      font-size: 12px; font-weight: 700; padding: 5px 12px; border-radius: 99px;
+      color: var(--text-sub); transition: all 0.15s ease; line-height: 1;
+    }
+    .lang-btn.active {
+      background: var(--accent); color: white;
+      box-shadow: 0 1px 4px rgba(37,99,235,0.35);
+    }
+    .lang-btn:hover:not(.active) { color: var(--text-title); }
+    h2 { font-size: 18px; font-weight: 600; margin: 0 0 8px; }
+    h3 { font-size: 15px; font-weight: 500; margin: 0 0 6px; color: var(--text-sub); }
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 24px; margin-bottom: 24px;
+      transition: box-shadow 0.2s ease;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+    .card:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+    .card-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 16px; cursor: pointer;
+    }
+    .card-header h2 { margin: 0; }
+    .toggle-icon { font-size: 20px; font-weight: 300; color: var(--text-sub); transition: transform 0.2s; }
+    .collapsible-content { overflow: hidden; transition: max-height 0.3s ease-out; }
+    .collapsed .collapsible-content { max-height: 0 !important; }
+    .flex-row {
+      display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .flex-between {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .flex-col  { display: flex; flex-direction: column; gap: 12px; }
+    input, select {
+      background: var(--bg-main); border: 1px solid var(--border);
+      color: var(--text-title); padding: 8px 12px;
+      border-radius: 12px; font-size: 14px; transition: 0.1s;
+    }
+    input:focus, select:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
+    }
+    .btn {
+      background-color: var(--accent); color: white;
+      border: none; padding: 8px 18px; border-radius: 40px;
+      font-weight: 500; font-size: 14px; cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn:hover    { background-color: var(--accent-hover); }
+    .btn:active   { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-pro      { background-color: var(--pro); color: #000; }
+    .btn-pro:hover{ background-color: var(--pro-hover); }
+    .btn-small    { padding: 4px 12px; font-size: 12px; }
+    .btn-danger   { background-color: var(--danger); }
+    .btn-danger:hover { background-color: #b91c1c; }
+    .pro-badge {
+      background: var(--pro); color: #000;
+      border-radius: 40px; padding: 2px 10px;
+      font-size: 11px; font-weight: 600; margin-left: 10px; vertical-align: middle;
+    }
+    .blur-overlay {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(15,23,42,0.85);
+      backdrop-filter: blur(4px);
+      border-radius: 20px;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      z-index: 10; color: white; text-align: center; padding: 20px;
+    }
+    .relative-card { position: relative; }
+    .info-text {
+      background: var(--bg-main); padding: 16px;
+      border-radius: 16px; margin: 16px 0 0;
+      font-size: 14px; color: var(--text-sub);
+    }
+    .info-text ul  { margin: 6px 0 12px 20px; padding: 0; }
+    .info-text li  { margin-bottom: 4px; }
+    .info-text code{
+      background: var(--border); padding: 2px 6px;
+      border-radius: 4px; font-size: 12px;
+    }
+    .domain-list { margin-top: 12px; }
+    .domain-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 0; border-bottom: 1px solid var(--border);
+    }
+    canvas {
+      background: var(--canvas-bg); border-radius: 16px;
+      width: 100%; height: auto; margin-top: 12px;
+    }
+    .pro-settings-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .inline-label { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .small-hint   { font-size: 11px; color: var(--text-sub); }
+    .license-area {
+      background: var(--bg-main); border-radius: 16px;
+      padding: 16px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+    }
+    .license-area input { flex: 2; min-width: 200px; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+    .tab-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .tab-table th {
+      text-align: left; padding: 8px 6px;
+      border-bottom: 2px solid var(--border);
+      color: var(--text-sub); font-weight: 600; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .tab-table td {
+      padding: 8px 6px; border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .tab-table tr:last-child td { border-bottom: none; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .footer-links {
+      margin-top: 32px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-sub);
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+    }
+    .footer-links a { margin: 0 12px; }
+    #toastContainer {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      z-index: 9999; pointer-events: none;
+    }
+    .toast {
+      background: #1e293b; color: #f8fafc; padding: 10px 20px;
+      border-radius: 99px; font-size: 13px; font-weight: 600;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25); white-space: nowrap;
+      animation: toastIn 0.2s ease, toastOut 0.3s ease 2s forwards;
+    }
+    .toast.success { border-left: 4px solid #22c55e; }
+    .toast.error   { border-left: 4px solid #f43f5e; }
+    @keyframes toastIn  { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+    @keyframes toastOut { to { opacity:0; } }
+    .pro-only { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1 id="panelTitle">TabCost Control Panel</h1>
+  <div class="lang-toggle" id="langToggle" title="Switch language / Cambiar idioma">
+    <button class="lang-btn" id="langES" data-lang="es">ES</button>
+    <button class="lang-btn" id="langEN" data-lang="en">EN</button>
+  </div>
+</div>
+
+<div id="toastContainer"></div>
+
+<div class="card" id="onboardingSection" style="display:none;">
+  <h2 id="onboardingTitle">Welcome to TabCost</h2>
+  <p  id="onboardingDesc">Set your hourly rate to start tracking opportunity cost.</p>
+  <div class="flex-row">
+    <input type="number" id="onboardingRateInput" placeholder="e.g. 50" min="1">
+    <span id="currencyLabel">USD / hour</span>
+    <button id="startOnboardingBtn" class="btn btn-pro">Start Audit</button>
+  </div>
+</div>
+
+<div class="card" id="licenseCard">
+  <h2 id="licenseTitle">Pro License</h2>
+  <p class="info-text" style="margin-bottom:12px;" id="licenseDesc">
+    Enter your Gumroad license code to unlock advanced features.
+  </p>
+  <div class="license-area">
+    <input type="text" id="proLicenseKey" placeholder="XXXX-XXXX-XXXX-XXXX">
+    <button id="activateProBtn" class="btn btn-pro">Activate Pro</button>
+    <button id="buyProBtn" class="btn btn-pro" style="background-color:#10b981;">Buy Pro (5 USD/EUR)</button>
+  </div>
+  <div id="licenseStatus" style="font-size:13px;margin-top:8px;"></div>
+</div>
+
+<div class="card">
+  <h2 id="hourlyRateTitle">Hourly Rate</h2>
+  <div class="flex-row">
+    <input type="number" id="rateInput" value="50" min="1">
+    <select id="currencySelect" style="width:80px;">
+      <option value="USD">USD</option>
+      <option value="EUR">EUR</option>
+    </select>
+    <button id="saveRateBtn" class="btn">Save Rate</button>
+  </div>
+</div>
+
+<div class="card" id="infoCard">
+  <div class="card-header" id="infoHeader">
+    <h2 id="howItWorksTitle">How TabCost works</h2>
+    <span class="toggle-icon" id="infoToggle">▼</span>
+  </div>
+  <div class="collapsible-content" id="infoContent">
+    <div class="info-text">
+      <div id="howItWorksContent"></div>
+    </div>
+  </div>
+</div>
+
+<div class="card relative-card" id="proConfigCard" style="opacity:0.6;">
+  <div id="proConfigLock" class="blur-overlay">
+    <p id="unlockMsg">Unlock advanced features</p>
+    <button id="gotoLicenseBtn" class="btn btn-pro">Activate Pro License</button>
+  </div>
+  <h2 id="proSettingsTitle">Pro Settings <span class="pro-badge">PRO</span></h2>
+  <div class="pro-settings-group">
+    <div class="inline-label">
+      <label id="graceLabel">Grace minutes:</label>
+      <input type="number" id="graceMinutes" value="5" min="1" max="30" step="1">
+      <span class="small-hint" id="graceHint">(inactivity before counting)</span>
+    </div>
+    <div class="inline-label">
+      <label id="impactLabel">Impact percentage:</label>
+      <input type="number" id="impactPercent" value="20" min="10" max="50" step="5">
+      <span class="small-hint" id="impactHint">% of rate per minute</span>
+    </div>
+    <div class="inline-label">
+      <label id="autoCloseLabel">Auto-close after (min):</label>
+      <input type="number" id="autoCloseMinutes" value="0" min="0" max="120" step="5">
+      <span class="small-hint" id="autoCloseHint">0 = off</span>
+    </div>
+    <div class="inline-label">
+      <label id="notifThresholdLabel">Notification threshold ($):</label>
+      <input type="number" id="notificationThreshold" value="2.50" min="0.5" max="20" step="0.5">
+    </div>
+    <div class="inline-label">
+      <label id="notifEnabledLabel">Push notifications:</label>
+      <select id="notificationsEnabled">
+        <option value="true"  id="notifEnabledTrue">Enabled</option>
+        <option value="false" id="notifEnabledFalse">Disabled</option>
+      </select>
+    </div>
+  </div>
+  <button id="saveProConfigBtn" class="btn btn-small" style="margin-top:16px;">Save Pro Settings</button>
+
+  <hr>
+
+  <h2 id="ignoredTitle">Ignored domains <span class="pro-badge">PRO</span></h2>
+  <p class="small-hint" id="ignoredDesc">Add domains (e.g., spotify.com) to exclude their tabs from counting.</p>
+  <div class="flex-row">
+    <input type="text" id="newDomainInput" placeholder="example.com" style="width:200px;">
+    <button id="addDomainBtn" class="btn btn-small">Add domain</button>
+  </div>
+  <div id="domainListContainer" class="domain-list"></div>
+</div>
+
+<div class="card relative-card" id="historyCard">
+  <div id="historyLock" class="blur-overlay">
+    <p id="historyLockMsg">Full history and export</p>
+    <button id="historyGotoLicenseBtn" class="btn btn-pro">Activate Pro License</button>
+  </div>
+  <h2 id="historyTitle">Loss History <span class="pro-badge">PRO</span></h2>
+  <div class="flex-row" style="display:none;">
+    <label id="rangeLabel">Show last:</label>
+    <select id="rangeDays">
+      <option value="1">1 day</option>
+      <option value="7" selected>7 days</option>
+      <option value="14">14 days</option>
+      <option value="30">30 days</option>
+      <option value="60">60 days</option>
+      <option value="90">90 days</option>
+    </select>
+    <button id="applyRangeBtn" class="btn btn-small">Update chart</button>
+  </div>
+  <canvas id="historyCanvas" height="150"></canvas>
+  <div class="flex-row" style="justify-content:space-between;margin-top:12px;">
+    <button id="exportCsvBtn" class="btn btn-small" style="display:none;">Export CSV (current range)</button>
+    <span id="rangeInfo" style="font-size:12px;color:var(--text-sub);"></span>
+  </div>
+</div>
+
+<div class="card">
+  <h2 id="auditTitle">Critical Tabs Audit</h2>
+  <table class="tab-table">
+    <thead>
+      <tr>
+        <th id="tabHeader">Tab</th>
+        <th id="timeHeader" style="text-align:center;">Inactive time</th>
+        <th id="costHeader" style="text-align:right;">Opportunity cost</th>
+      </tr>
+    </thead>
+    <tbody id="realTabList">
+      <tr><td colspan="3" style="text-align:center;">Loading...</td></tr>
+    </tbody>
+  </table>
+  <div class="flex-between" style="margin-top:12px;">
+    <button id="refreshTableBtn" class="btn btn-small">Refresh</button>
+    <button id="exportTabsBtn" class="btn btn-small pro-only">📎 Export inactive tabs to CSV</button>
+  </div>
+</div>
+
+<div class="footer-links">
+  <a href="https://github.com/projekta2/tabcost-support/blob/main/SUPPORT.md" target="_blank" id="supportLink">📧 Support</a>
+  <a href="https://github.com/projekta2/tabcost-privacy/blob/main/PRIVACY.md" target="_blank" id="privacyLink">🔒 Privacy Policy</a>
+  <a href="#" id="docsLink"></a>
+</div>
+
+<script src="options.js"></script>
+</body>
+</html>
