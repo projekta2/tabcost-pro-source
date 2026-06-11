@@ -39,7 +39,7 @@
     <img src="https://img.shields.io/badge/Landing_Page-0ea5e9?style=for-the-badge&labelColor=0b0e17" />
   </a>
   &nbsp;
-  <a href="https://projekta2.github.io/tabcost-landing/demo.html">
+  <a href="https://rawcdn.githack.com/projekta2/tabcost-landing/7565e4079cf2134cc17a0c1c6d7ca4aed7d3b817/demo.html">
     <img src="https://img.shields.io/badge/▶%20Live%20Demo-ff69b4?style=for-the-badge&labelColor=0b0e17" />
   </a>
 </p>
@@ -391,7 +391,7 @@ No build step. No external libraries. No npm. The history export is CSV-rendered
 
 > **Screenshots coming soon** — real captures of the popup, audit table, and history chart will be added to `assets/` in the next update.
 >
-> In the meantime, try the **[▶ interactive live demo](https://projekta2.github.io/tabcost-landing/demo.html)** — a pixel-identical replica of the extension with a full guided tour. No install required.
+> In the meantime, try the **[▶ interactive live demo](https://rawcdn.githack.com/projekta2/tabcost-landing/7565e4079cf2134cc17a0c1c6d7ca4aed7d3b817/demo.html)** — a pixel-identical replica of the extension with a full guided tour. No install required.
 
 <br />
 
@@ -472,8 +472,8 @@ Issues labelled [`good-first-issue`](https://github.com/projekta2/tabcost-pro-so
     <img src="https://img.shields.io/badge/Landing_Page-0ea5e9?style=flat-square&labelColor=0b0e17" />
   </a>
   &nbsp;
-  <a href="https://projekta2.github.io/tabcost-landing/demo.html">
-    <img src="https://img.shields.io/badge/▶_Live_Demo-ff69b4?style=flat-square&labelColor=0b0e17" />
+  <a href="https://rawcdn.githack.com/projekta2/tabcost-landing/7565e4079cf2134cc17a0c1c6d7ca4aed7d3b817/demo.html">
+    <img src="https://img.shields.io/badge/▶%20Live%20Demo-ff69b4?style=flat-square&labelColor=0b0e17" />
   </a>
   &nbsp;
   <a href="https://github.com/projekta2/tabcost-support/blob/main/SUPPORT.md">
