@@ -2,6 +2,7 @@
   "manifest_version": 3,
   "name": "TabCost Pro",
   "version": "1.5.6",
+  chore: bump version to 1.5.6
   "description": "Track the real cost of your inactive tabs. Bilingual extension (English/Spanish).",
   "permissions": [
     "storage",
