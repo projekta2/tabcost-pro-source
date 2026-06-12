@@ -19,4 +19,4 @@ All notable changes to TabCost Pro will be documented in this file.
 - Service worker termination with heartbeat fallback
 - Cost calculation after Chrome restart
 
-- ocs: add CHANGELOG.md
+ocs: add CHANGELOG.md
