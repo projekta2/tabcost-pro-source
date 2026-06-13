@@ -387,19 +387,29 @@ No build step. No external libraries. No npm. The history export is CSV-rendered
 
 ## 📸 Screenshots
 
-<br />
+Here’s how TabCost Pro looks in action.
 
-> **Screenshots coming soon** — real captures of the popup, audit table, and history chart will be added to `assets/` in the next update.
->
-> In the meantime, try the **[▶ interactive live demo](https://rawcdn.githack.com/projekta2/tabcost-landing/7565e4079cf2134cc17a0c1c6d7ca4aed7d3b817/demo.html)** — a pixel-identical replica of the extension with a full guided tour. No install required.
+<div align="center">
+
+| Popup view | Tab audit | History chart (Pro) |
+|:---:|:---:|:---:|
+| ![Popup](assets/tabcost_store_screenshots%20_1.jpg) | ![Audit](assets/tabcost_store_screenshots%20_2.jpg) | ![History](assets/tabcost_store_screenshots%20_3.jpg) |
+
+| Pro settings | Notification example |
+|:---:|:---:|
+| ![Settings](assets/tabcost_store_screenshots%20_4.jpg) | ![Notification](assets/tabcost_store_screenshots%20_5.jpg) |
+
+</div>
+
+All screenshots are from the live extension running in Chrome.
+
+> You can also try the **[▶ interactive live demo](https://rawcdn.githack.com/projekta2/tabcost-landing/7565e4079cf2134cc17a0c1c6d7ca4aed7d3b817/demo.html)** — a pixel-identical replica with a full guided tour. No install required.
 
 <br />
 
 <p align="center">
   <img src="https://capsule-render.vercel.app/api?type=rect&color=0:0ea5e9,100:2563eb&height=2" width="100%" />
 </p>
-
-<br />
 
 ## 🗺️ Roadmap
 
