@@ -525,7 +525,7 @@ Issues labelled [`good-first-issue`](https://github.com/projekta2/tabcost-pro-so
         <a href="https://projekta2.github.io/chaintrace-landing/"><img src="https://img.shields.io/badge/ChainTrace-Supply_chain_data_extraction-2563eb?style=flat-square" /></a>
       </p>
       <p>
-        <a href="https://projekta2.github.io/projekta2-pr-focus-landing/"><img src="https://img.shields.io/badge/PR_Focus_Pro-AI--powered_code_review-f97316?style=flat-square" /></a>
+        <a href="https://projekta2.github.io/pr-focus-landing/pr-focus-demo.html"><img src="https://img.shields.io/badge/PR_Focus_Pro-AI--powered_code_review-f97316?style=flat-square" /></a>
       </p>
     </td>
   </tr>
